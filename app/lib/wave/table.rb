@@ -11,9 +11,7 @@ module Wave
       unless cell
         cell = UITableViewCell.alloc.initWithStyle(row.style, reuseIdentifier:row.reuse_identifier)
       end
-      
-      puts "#{cell}"
-      
+            
       cell.textLabel.text = row.title
       cell.detailTextLabel.text = row.detail if cell.detailTextLabel
       
@@ -29,11 +27,11 @@ module Wave
     end
     
     def tableView(table_view, titleForHeaderInSection:section)
-      nil
+      table.sections[section].header
     end
     
     def tableView(table_view, titleForFooterInSection:section)
-      nil
+      table.sections[section].footer
     end
     
     def tableView(table_view, commitEditingStyle:editing_style, forRowAtIndexPath:path)
@@ -54,7 +52,6 @@ module Wave
       row = table.row_with_path(path)
       
       if row.action
-        puts row.action
         if row.action.is_a? Proc
           row.action.call()
         else
@@ -70,7 +67,6 @@ module Wave
     module ClassMethods
       def static_source
         @table = Table.new
-        puts "yielding table"
         yield @table
       end
       
@@ -92,7 +88,6 @@ module Wave
       
       def section
         new_section = Section.new
-        puts "yielding new section"
         yield new_section
         @sections << new_section
       end
@@ -115,7 +110,6 @@ module Wave
       
       def row
         new_row = Row.new
-        puts "yielding row"
         yield new_row
         @rows << new_row
       end
