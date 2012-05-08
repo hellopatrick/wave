@@ -8,28 +8,54 @@ A library (soon to be gem) for RubyMotion that smooths some of CocoaTouch's pric
 
 Use with UITableViewController to quickly produce static tables.
 
-    table_view_builder do |table|
-      table.section do |section|
-        section.header = "Menu"
+    class Menu < UITableViewController
+      # this includes table_view_builder DSL
+      # and the required methods for UITableViewDataSource and UITableViewDelegate
+      include Wave::Table
       
-        section.row do |row|
-          row.title = 'Launch Game'
-          row.action = 'launch_game'
-        end
-      
-        section.row do |row|
-          row.title = 'Preferences'
-          row.detail = 'So...'
+      # creates a new table, only call once.
+      table_view_builder do |table|
+        # create a new section in the table
+        table.section do |section|
+          section.header = "Menu"
+          section.footer = "You may also footer!"
           
-          row.style = UITableViewCellStyleSubtitle
-          row.reuse_identifier = 'subtitle'
-          
-          row.action = lambda do 
-            puts "or use a block!"
+          # now add your rows!
+          section.row do |row|
+            # if you want to use a standard UITableViewCell...
+            row.style = UITableViewCellStyleSubtitle
+            
+            # otherwise...
+            row.cell_builder = lambda { |row| MyCell.alloc.init }
+            
+            # don't forget your reuse_identifier. You'll want to use this in cell builder, too.
+            row.reuse_identifier = 'subtitled'
+            
+            # customizing is as simple as...
+            row.title = 'Launch Game'
+            row.detail = 'Start playing.'
+            
+            # but also...
+            row.cell_customizer = lambda do |cell|
+              cell.textLabel.text = NSDate.date.description
+              cell.imageView.image = NSImage.imageNamed 'something_cool.png'
+            end
+            
+            # handling taps on row
+            # target-action calls a particular action on a target.
+            # by default row.target = nil; this calls the method on your controller.
+            row.action = 'action'
+            row.target = nil
+            
+            # you may also use a proc.
+            # this is evaluated in the controller's context
+            # this gives you access to controller's properties, such as storyboard
+            row.action = lambda { puts "i'm a block and so can you!" }
           end
-        end     
+        end
       end
     end
+    
     
  Check out app/menu.rb for fuller example.
 
