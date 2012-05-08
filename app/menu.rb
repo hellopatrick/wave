@@ -27,7 +27,18 @@ class Menu < UITableViewController
       section.header = "I Have A Header"
       section.footer = "I Have A Footer"
       section.row do |row|
-        row.title = "High Scores"
+        row.reuse_identifier = "preferences"
+        row.style = UITableViewCellStyleValue1
+        
+        row.cell_builder = lambda do |row|
+          UITableViewCell.alloc.initWithStyle(row.style, reuseIdentifier:row.reuse_identifier)
+        end
+        
+        row.cell_customizer = lambda do |cell|
+          cell.textLabel.text = "High Scores"
+          cell.detailTextLabel.text = "Your highlights"
+          cell.detailTextLabel.font = UIFont.italicSystemFontOfSize 12
+        end
       end  
     end
   end

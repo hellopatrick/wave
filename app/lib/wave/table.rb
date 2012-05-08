@@ -9,11 +9,19 @@ module Wave
       cell = table_view.dequeueReusableCellWithIdentifier(row.reuse_identifier)
       
       unless cell
-        cell = UITableViewCell.alloc.initWithStyle(row.style, reuseIdentifier:row.reuse_identifier)
+        if row.cell_builder
+          cell = row.cell_builder.call(row)
+        else
+          cell = UITableViewCell.alloc.initWithStyle(row.style, reuseIdentifier:row.reuse_identifier)
+        end
       end
-            
-      cell.textLabel.text = row.title
-      cell.detailTextLabel.text = row.detail if cell.detailTextLabel
+      
+      if row.cell_customizer
+        row.cell_customizer.call(cell)
+      else
+        cell.textLabel.text = row.title
+        cell.detailTextLabel.text = row.detail if cell.detailTextLabel  
+      end
       
       cell
     end
@@ -116,7 +124,11 @@ module Wave
     end
     
     class Row
-      attr_accessor :title, :detail, :style, :reuse_identifier
+      attr_accessor :title, :detail
+      attr_accessor :style, :reuse_identifier
+      
+      attr_accessor :cell_builder, :cell_customizer
+      
       attr_accessor :action, :target
       
       def initialize
