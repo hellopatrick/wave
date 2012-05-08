@@ -1,27 +1,14 @@
 module Wave
   module Table
     def table
-      @table ||= self.class.table
+      @table ||= self.class.table      
     end
     
     def tableView(table_view, cellForRowAtIndexPath:path)
       row = table.row_with_path(path)
-      cell = table_view.dequeueReusableCellWithIdentifier(row.reuse_identifier)
-      
-      unless cell
-        if row.cell_builder
-          cell = row.cell_builder.call(row)
-        else
-          cell = UITableViewCell.alloc.initWithStyle(row.style, reuseIdentifier:row.reuse_identifier)
-        end
-      end
-      
-      if row.cell_customizer
-        row.cell_customizer.call(cell)
-      else
-        cell.textLabel.text = row.title
-        cell.detailTextLabel.text = row.detail if cell.detailTextLabel  
-      end
+      cell = table_view.dequeueReusableCellWithIdentifier(row.reuse_identifier) || row.cell_builder.call(row)
+            
+      row.cell_customizer.call(cell)
       
       cell
     end
@@ -58,10 +45,10 @@ module Wave
     
     def tableView(table_view, didSelectRowAtIndexPath:path)
       row = table.row_with_path(path)
-      
+
       if row.action
         if row.action.is_a? Proc
-          row.action.call()
+          self.instance_exec &row.action
         else
           if row.target
             row.target.send(row.action)
@@ -134,6 +121,12 @@ module Wave
       def initialize
         @reuse_identifier = "com.helloresolven.wave"
         @style = UITableViewCellStyleDefault
+        @cell_builder = lambda { |row| UITableViewCell.alloc.initWithStyle(row.style, reuseIdentifier:row.reuse_identifier) }
+        
+        @cell_customizer = lambda do |cell|
+          cell.textLabel.text = @title
+          cell.detailTextLabel.text = @detail if cell.detailTextLabel 
+        end        
       end
     end
   end

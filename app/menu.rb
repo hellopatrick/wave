@@ -26,17 +26,25 @@ class Menu < UITableViewController
     table.section do |section|
       section.header = "I Have A Header"
       section.footer = "I Have A Footer"
+      
       section.row do |row|
         row.reuse_identifier = "preferences"
-        row.style = UITableViewCellStyleValue2
+        row.style = UITableViewCellStyleValue1
         
+        row.action = lambda do
+          controller = storyboard.instantiateViewControllerWithIdentifier("Plus")
+          self.navigationController.pushViewController(controller, animated:true)
+        end
+        
+        # return a cell
         row.cell_builder = lambda do |row|
           UITableViewCell.alloc.initWithStyle(row.style, reuseIdentifier:row.reuse_identifier)
         end
         
+        # customize your cell
         row.cell_customizer = lambda do |cell|
           cell.textLabel.text = "High Scores"
-          cell.detailTextLabel.text = "Your highlights"
+          cell.detailTextLabel.text = "ho hum."
           cell.detailTextLabel.font = UIFont.italicSystemFontOfSize 12
         end
       end  
@@ -45,5 +53,10 @@ class Menu < UITableViewController
   
   def launch_game
     puts "hey, launched game!"
+  end
+  
+  def viewDidLoad
+    puts "view did load."
+    puts "#{self.storyboard}"
   end
 end
