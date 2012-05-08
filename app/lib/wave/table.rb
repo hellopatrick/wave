@@ -65,7 +65,7 @@ module Wave
     end
     
     module ClassMethods
-      def static_source
+      def table_view_builder
         @table = Table.new
         yield @table
       end

@@ -1,18 +1,18 @@
 class Menu < UITableViewController
   include Wave::Table
   
-  static_source do |table|
+  table_view_builder do |table|
     table.section do |section|
       section.header = "Menu"
       
       section.row do |row|
-        row.title = 'Launch Game'
+        row.title = "Launch"
         row.action = 'launch_game'
       end
       
       section.row do |row|
         row.title = 'Preferences'
-        row.detail = 'subtitle'
+        row.detail = 'View Preferences'
         row.reuse_identifier = 'something.else'
         
         row.action = lambda do 
@@ -24,10 +24,10 @@ class Menu < UITableViewController
     end
     
     table.section do |section|
-      section.header = "Header"
-      section.footer = "Footer"
+      section.header = "I Have A Header"
+      section.footer = "I Have A Footer"
       section.row do |row|
-        row.title = 'High Scores'
+        row.title = "High Scores"
       end  
     end
   end

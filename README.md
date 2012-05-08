@@ -8,7 +8,7 @@ A library (soon to be gem) for RubyMotion that smooths some of CocoaTouch's pric
 
 Use with UITableViewController to quickly produce static tables.
 
-    static_source do |table|
+    table_view_builder do |table|
       table.section do |section|
         section.header = "Menu"
       
