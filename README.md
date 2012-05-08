@@ -31,7 +31,7 @@ Use with UITableViewController to quickly produce static tables.
       end
     end
     
- Check out app/menu.rb for full example.
+ Check out app/menu.rb for fuller example.
 
 # License
 

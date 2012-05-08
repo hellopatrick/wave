@@ -28,7 +28,7 @@ class Menu < UITableViewController
       section.footer = "I Have A Footer"
       section.row do |row|
         row.reuse_identifier = "preferences"
-        row.style = UITableViewCellStyleValue1
+        row.style = UITableViewCellStyleValue2
         
         row.cell_builder = lambda do |row|
           UITableViewCell.alloc.initWithStyle(row.style, reuseIdentifier:row.reuse_identifier)
