@@ -52,11 +52,6 @@ class Menu < UITableViewController
   end
   
   def launch_game
-    puts "hey, launched game!"
-  end
-  
-  def viewDidLoad
-    puts "view did load."
-    puts "#{self.storyboard}"
+    puts "from a method."
   end
 end

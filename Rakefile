@@ -4,7 +4,7 @@ require 'motion/project'
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'wave'
-  app.file_dependencies 'app/menu.rb' => ['app/lib/wave/table.rb']
+  app.files = Dir.glob('./app/lib/**/*.rb') | Dir.glob('./app/**/*.rb') 
 end
 
 Rake::Task['build:simulator'].enhance ['build:compile_resources']
