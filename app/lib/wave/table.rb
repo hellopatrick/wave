@@ -60,7 +60,7 @@ module Wave
     end
     
     module ClassMethods
-      def table_view_builder(&block)
+      def table_view_builder
         @table = Table.new
         yield @table
       end
